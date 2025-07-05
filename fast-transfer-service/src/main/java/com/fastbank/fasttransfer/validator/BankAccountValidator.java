@@ -7,6 +7,9 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validator that checks that the account exists in the system
+ */
 @Component
 public class BankAccountValidator implements ConstraintValidator<BankAccount, String> {
 

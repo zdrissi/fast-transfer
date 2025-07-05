@@ -1,39 +1,33 @@
 package com.fastbank.fasttransfer.controller;
 
 import com.fastbank.fasttransfer.api.controller.AccountApi;
-import com.fastbank.fasttransfer.api.domain.*;
-import com.fastbank.fasttransfer.client.CurrencyExchangeClientCaller;
+import com.fastbank.fasttransfer.api.domain.BankAccountInfosResponse;
+import com.fastbank.fasttransfer.api.domain.CreateBankAccountRequest;
+import com.fastbank.fasttransfer.api.domain.CreateBankAccountResponse;
+import com.fastbank.fasttransfer.service.BankAccountService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AccountController implements AccountApi {
 
-    @Autowired
-    private CurrencyExchangeClientCaller currencyExchangeClientCaller;
+    private final BankAccountService bankAccountService;
 
     @Override
     public ResponseEntity<CreateBankAccountResponse> createBankAccount(CreateBankAccountRequest createBankAccountRequest) {
-        return ok(new CreateBankAccountResponse().accountId(UUID.randomUUID().toString()));
+        log.info("Create bank account request: {}", createBankAccountRequest);
+        return ok(bankAccountService.createBankAccount(createBankAccountRequest));
     }
 
     @Override
-    public ResponseEntity<BankAccountInfosResponse> findBankAccount(String accountId) {
-        BigDecimal exchangeRate = currencyExchangeClientCaller.getExchangeRate("EUR", "USD");
-        log.info("Exchange rate: {}", exchangeRate);
-        return ok(new BankAccountInfosResponse().accountId(accountId));
-    }
-
-    @Override
-    public ResponseEntity<TransferFundsResponse> transferFunds(TransferFundsRequest transferFundsRequest) {
-        return null;
+    public ResponseEntity<BankAccountInfosResponse> findBankAccount(String accountNumber) {
+        log.info("Finding bank account : {}", accountNumber);
+        return ok(bankAccountService.findBankAccount(accountNumber));
     }
 }

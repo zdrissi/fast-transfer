@@ -9,50 +9,35 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=footballteamdatabase
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - footballteamapi_network
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin-container
-    restart: always
-    ports:
-      - "5050:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    depends_on:
-      - postgres
-    networks:
       - fast-transfer_network
 
-  fast-transfer:
-    image: 'fast-transfer:latest'
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: fast-transfer
-    restart: on-failure
-    env_file:
-      - .env  # Use the .env file for environment variables
-    ports:
-      - "3112:3112"
-    environment:
-      - server.port=3112
-      - FOOTBALL_TEAM_DB_IP=postgres
-      - FOOTBALL_TEAM_DB_PORT=5432
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - JAVA_OPTS=-Dname=fast-transfer
-    depends_on:
-      - postgres
-      - sonarqube
-    networks:
-      - fast-transfer_network
+#  fast-transfer:
+#    image: 'fast-transfer:latest'
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: fast-transfer
+#    restart: on-failure
+#    env_file:
+#      - .env  # Use the .env file for environment variables
+#    ports:
+#      - "3112:3112"
+#    environment:
+#      - server.port=3112
+#      - FOOTBALL_TEAM_DB_IP=postgres
+#      - FOOTBALL_TEAM_DB_PORT=5432
+#      - POSTGRES_USER=${POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      - JAVA_OPTS=-Dname=fast-transfer
+#    depends_on:
+#      - postgres
+#      - sonarqube
+#    networks:
+#      - fast-transfer_network
 
   sonarqube:
     image: sonarqube:latest

@@ -1,18 +1,20 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: fast-transfer
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://${POSTGRES_IP:localhost}:${POSTGRES_PORT:5432}/${spring.application.name}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${spring.application.name}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -48,5 +50,3 @@ management:
     metrics:
       enabled: true
 
-server:
-  port: 8080

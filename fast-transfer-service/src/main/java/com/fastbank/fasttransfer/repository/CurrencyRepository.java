@@ -1,13 +1,11 @@
 package com.fastbank.fasttransfer.repository;
 
+import com.fastbank.fasttransfer.entity.CurrencyEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-
 @Component
-public class CurrencyRepository {
+public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> {
 
-    public boolean isValidCurrency(String currency) {
-        return Set.of("EUR", "USD").contains(currency);
-    }
+    boolean existsByCode(final String code);
 }

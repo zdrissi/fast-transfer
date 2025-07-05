@@ -11,6 +11,6 @@ public class CurrencyService {
     private final CurrencyRepository currencyRepository;
 
     public boolean isValidCurrency(String currency) {
-        return currencyRepository.isValidCurrency(currency);
+        return currencyRepository.existsByCode(currency);
     }
 }

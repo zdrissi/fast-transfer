@@ -5,6 +5,8 @@ info:
     # Fast transfer - API
     Faster transfer API for managing accounts and handling money transfers.
   version: 1.0.0
+servers:
+  - url: http://localhost:8080
 paths:
   /v1/account:
     post:
@@ -25,21 +27,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateBankAccountResponse'
 
-  /v1/account/{accountId}:
+  /v1/account/{accountNumber}:
     get:
       tags: [ Account ]
       summary: Get a bank account infos
       operationId: findBankAccount
       parameters:
-        - name: accountId
-          description: The account id
+        - name: accountNumber
+          description: The account number (iban)
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Identifier of the newly created account
+          description: Bank account infos
           content:
             application/json:
               schema:
@@ -47,8 +49,8 @@ paths:
 
   /v1/account/transfer-funds:
     post:
-      tags: [ Account ]
-      summary: Get a bank account infos
+      tags: [ Transfer ]
+      summary: Perform a fund transfer between two accounts
       operationId: transferFunds
       requestBody:
         required: true
@@ -58,7 +60,7 @@ paths:
               $ref: '#/components/schemas/TransferFundsRequest'
       responses:
         '200':
-          description: Identifier of the newly created account
+          description: Transaction id of the transfer
           content:
             application/json:
               schema:
@@ -90,14 +92,16 @@ components:
     CreateBankAccountResponse:
       type: object
       properties:
-        accountId:
-          description: Unique Id of the account
+        accountNumber:
+          description: Account number of the newly created account
           type: string
 
     BankAccountInfosResponse:
       type: object
       properties:
         accountId:
+          type: number
+        accountNumber:
           type: string
         ownerId:
           type: string
@@ -112,15 +116,15 @@ components:
     TransferFundsRequest:
       type: object
       required:
-        - debitAccountId
-        - creditAccountId
+        - debitAccountNumber
+        - creditAccountNumber
         - currency
         - amount
       properties:
-        debitAccountId:
+        debitAccountNumber:
           type: string
           x-field-extra-annotation: '@BankAccount'
-        creditAccountId:
+        creditAccountNumber:
           type: string
           x-field-extra-annotation: '@BankAccount'
         currency:

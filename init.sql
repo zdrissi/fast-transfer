@@ -1,1 +1,1 @@
-CREATE DATABASE fast-transfer;
+CREATE DATABASE "fast-transfer";

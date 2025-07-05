@@ -7,6 +7,9 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validator that checks that currency is supported
+ */
 @Component
 public class CurrencyValidator implements ConstraintValidator<Currency, String> {
 
