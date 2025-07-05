@@ -1,6 +1,15 @@
 server:
   port: 8080
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+
 spring:
   application:
     name: fast-transfer
@@ -15,9 +24,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
+
+app:
+  currency-exchange-api:
+    url: https://api.freecurrencyapi.com
+    key: ${CURRENCY_EXCHANGE_API_KEY:default-key}
 
 resilience4j:
   circuitbreaker:
@@ -25,28 +36,9 @@ resilience4j:
       currencyExchangeClient:
         sliding-window-size: 10
         minimum-number-of-calls: 5
-        failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
-        permitted-number-of-calls-in-half-open-state: 3
-        automatic-transition-from-open-to-half-open-enabled: true
 
-currency-exchange-api:
-  url: https://api.freecurrencyapi.com
-  key: ${CURRENCY_EXCHANGE_API_KEY:default-key}
-
-
-# SWAGGER
 springdoc:
   api-docs:
     enabled: true
-  show-actuator: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    metrics:
-      enabled: true
-
+  show-actuator: false

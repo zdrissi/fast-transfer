@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * Bank Account Entity
+ */
 @Getter
 @Setter
 @Entity
@@ -23,12 +26,12 @@ public class BankAccountEntity {
 
     @NotNull
     @Size(max = 200)
-    @Column(name = "owner_id", nullable = false, length = 200)
+    @Column(name = "owner_id")
     private String ownerId;
 
     @Size(max = 200)
     @NotNull
-    @Column(name = "owner_name", nullable = false, length = 200)
+    @Column(name = "owner_name")
     private String ownerName;
 
     @NotNull
@@ -43,11 +46,19 @@ public class BankAccountEntity {
     private BigDecimal balance;
 
     @NotNull
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private Instant createdAt;
 
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
+    }
+
+    public void debit(BigDecimal amount) {
+        balance = balance.subtract(amount);
+    }
+
+    public void credit(BigDecimal amount) {
+        balance = balance.add(amount);
     }
 }

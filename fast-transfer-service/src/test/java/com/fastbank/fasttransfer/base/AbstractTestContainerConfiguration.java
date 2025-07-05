@@ -16,7 +16,7 @@ public abstract class AbstractTestContainerConfiguration {
     private static final String POSTGRES_IMAGE = "postgres:17-alpine";
 
     private static final PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>(DockerImageName.parse(POSTGRES_IMAGE))
-            .withDatabaseName("footballteamdatabase")
+            .withDatabaseName("fast-transfer")
             .withUsername("postgres")
             .withPassword("111111");
 
@@ -40,5 +40,4 @@ public abstract class AbstractTestContainerConfiguration {
         registry.add("spring.datasource.username", POSTGRES_CONTAINER::getUsername);
         registry.add("spring.datasource.password", POSTGRES_CONTAINER::getPassword);
     }
-
 }

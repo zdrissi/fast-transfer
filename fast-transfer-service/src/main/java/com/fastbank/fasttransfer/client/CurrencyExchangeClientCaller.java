@@ -8,13 +8,16 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Currency exchange client caller
+ */
 @Component
 @RequiredArgsConstructor
 public class CurrencyExchangeClientCaller {
 
     private final CurrencyExchangeClient currencyExchangeClient;
 
-    @Value("${currency-exchange-api.key}")
+    @Value("${app.currency-exchange-api.key}")
     private String apiKey;
 
     @CircuitBreaker(name = "exchangeRatesApi")

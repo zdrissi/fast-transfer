@@ -27,12 +27,13 @@
 ## 📐 Business Rules
 
 * **Rule #1: A fund transfer must fail if any of the following occur:**
-
     * Either the debit or credit account does not exist.
     * The exchange rate cannot be retrieved.
     * The debit account has insufficient balance.
     * The transfer amount is less than or equal to 0.
-    * One or both currencies involved are not supported.
+
+
+* **Rule #2: Currencies used in bank account creation and in transfers must be supported.**
 
 ---
 
@@ -58,9 +59,11 @@ An account must include the following attributes:
 
 ## 🔌 REST API Endpoints
 
-| Method | URL                             | Description          | Request Body | Path Variables |
-| ------ | ------------------------------- | -------------------- | ------------ | -------------- |
-| POST   | `/api/v1/account/createAccount` | Create a new account | Yes          | No             |
+| Method | URL                           | Description                                   | Request Body | Path Variables |
+|--------|-------------------------------|-----------------------------------------------|--------------|----------------|
+| POST   | `/v1/account`                 | Create a new account                          | Yes          | No             |
+| GET    | `/v1/account/{accountNumber}` | Get a bank account infos                      | No           | Yes            |
+| POST   |  `/v1/account/transfer-funds` | Perform a fund transfer between two accounts  | Yes          | No             |
 
 *More endpoints to be defined in future iterations.*
 
@@ -71,7 +74,7 @@ An account must include the following attributes:
 * **Language & Frameworks**:
 
     * Java 21
-    * Spring Boot 3.0
+    * Spring Boot 3.+
     * RESTful APIs
 
 * **Resilience & Communication**:
@@ -93,6 +96,7 @@ An account must include the following attributes:
     * MapStruct
     * JUnit 5
     * Mockito
+    * TestContainers
     * Integration Testing
     * JaCoCo (Test Coverage Reports)
 
@@ -100,10 +104,7 @@ An account must include the following attributes:
 
     * Docker
     * Docker Compose
-    * GitHub Actions (CI/CD)
-    * Postman
     * Prometheus
     * Grafana
     * SonarQube
-    * Kubernetes
 

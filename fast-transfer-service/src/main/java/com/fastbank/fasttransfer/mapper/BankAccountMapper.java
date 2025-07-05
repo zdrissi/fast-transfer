@@ -7,6 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+/**
+ * Bank Account Mapper
+ */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
         componentModel = "spring")
 public interface BankAccountMapper {

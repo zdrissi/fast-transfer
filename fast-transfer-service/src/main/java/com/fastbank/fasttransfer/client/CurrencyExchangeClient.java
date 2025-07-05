@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "currencyExchangeClient", url = "${currency-exchange-api.url}")
+/**
+ * Currency exchange feign client
+ */
+@FeignClient(name = "currencyExchangeClient", url = "${app.currency-exchange-api.url}")
 public interface CurrencyExchangeClient {
 
     @GetMapping("/v1/latest")

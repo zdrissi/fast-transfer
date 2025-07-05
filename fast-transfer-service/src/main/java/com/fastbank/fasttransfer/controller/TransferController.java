@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+/**
+ * Transfer management controller
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class TransferController implements TransferApi {
 
     @Override
     public ResponseEntity<TransferFundsResponse> transferFunds(TransferFundsRequest transferFundsRequest) {
+        log.info("Transferring funds from {} to {}", transferFundsRequest.getDebitAccountNumber(), transferFundsRequest.getCreditAccountNumber());
         return ok(transferService.transferFunds(transferFundsRequest));
     }
 }

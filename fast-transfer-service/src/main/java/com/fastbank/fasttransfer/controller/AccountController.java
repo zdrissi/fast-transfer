@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+/**
+ * Account management controller
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 services:
 
   postgres:
-    image: postgres:latest
+    image: postgres:17-alpine
     container_name: postgres-container
     restart: always
     ports:
@@ -15,29 +15,29 @@ services:
     networks:
       - fast-transfer_network
 
-#  fast-transfer:
-#    image: 'fast-transfer:latest'
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: fast-transfer
-#    restart: on-failure
-#    env_file:
-#      - .env  # Use the .env file for environment variables
-#    ports:
-#      - "3112:3112"
-#    environment:
-#      - server.port=3112
-#      - FOOTBALL_TEAM_DB_IP=postgres
-#      - FOOTBALL_TEAM_DB_PORT=5432
-#      - POSTGRES_USER=${POSTGRES_USER}
-#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-#      - JAVA_OPTS=-Dname=fast-transfer
-#    depends_on:
-#      - postgres
-#      - sonarqube
-#    networks:
-#      - fast-transfer_network
+  fast-transfer:
+    image: 'fast-transfer:latest'
+    build:
+      context: .
+      dockerfile: fast-transfer-service/Dockerfile
+    container_name: fast-transfer
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    environment:
+      - server.port=8080
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JAVA_OPTS=-Dname=fast-transfer
+    depends_on:
+      - postgres
+      - sonarqube
+    networks:
+      - fast-transfer_network
 
   sonarqube:
     image: sonarqube:latest

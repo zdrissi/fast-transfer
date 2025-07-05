@@ -6,4 +6,5 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public abstract class AbstractBaseTest {
 
+    protected static final String CURRENCY = "EUR";
 }

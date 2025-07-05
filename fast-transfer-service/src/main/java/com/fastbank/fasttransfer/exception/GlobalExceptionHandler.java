@@ -1,8 +1,6 @@
 package com.fastbank.fasttransfer.exception;
 
 import com.fastbank.fasttransfer.model.CustomError;
-import jakarta.validation.ConstraintViolationException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -20,8 +18,16 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<Object> handleBankAccountNotFound(final BankAccountNotFoundException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
-                .header(CustomError.Header.VALIDATION_ERROR.getName())
                 .message("Bank Account cannot be found : %s".formatted(ex.getBankAccountNumber()))
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    protected ResponseEntity<Object> handleInsufficientFunds(final InsufficientFundsException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -46,7 +52,6 @@ public class GlobalExceptionHandler {
 
         CustomError customError = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
-                .header(CustomError.Header.VALIDATION_ERROR.getName())
                 .message("Validation failed")
                 .subErrors(subErrors)
                 .build();

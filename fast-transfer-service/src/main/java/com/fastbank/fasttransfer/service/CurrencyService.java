@@ -4,6 +4,9 @@ import com.fastbank.fasttransfer.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service to manage currencies
+ */
 @Service
 @RequiredArgsConstructor
 public class CurrencyService {
