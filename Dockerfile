@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=fast-transfer-service/target/*.jar
 
 COPY ${JAR_FILE} fast-transfer-service.jar
 

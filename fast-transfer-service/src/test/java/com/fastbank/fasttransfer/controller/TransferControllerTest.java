@@ -16,10 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TransferController.class)
-public class TransferControllerTest extends AbstractRestControllerTest {
-
-    public static final String CREDIT_ACCOUNT_NUMBER = UUID.randomUUID().toString();
-    public static final String DEBIT_ACCOUNT_NUMBER = UUID.randomUUID().toString();
+class TransferControllerTest extends AbstractRestControllerTest {
 
     @Test
     void givenValidTransferFundsRequest_whenTransferFunds_thenOk() throws Exception {
@@ -28,8 +25,7 @@ public class TransferControllerTest extends AbstractRestControllerTest {
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
                 .debitAccountNumber(DEBIT_ACCOUNT_NUMBER)
                 .creditAccountNumber(CREDIT_ACCOUNT_NUMBER)
-                .amount(BigDecimal.TEN)
-                .currency(CURRENCY);
+                .amount(BigDecimal.TEN);
         when(transferService.transferFunds(transferFundsRequest))
                 .thenReturn(new TransferFundsResponse().transactionId(transactionId));
 
@@ -46,8 +42,7 @@ public class TransferControllerTest extends AbstractRestControllerTest {
     void givenInValidTransferFundsRequest_whenTransferFunds_thenBadRequest() throws Exception {
         // Arrange
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
-                .amount(BigDecimal.TEN)
-                .currency(CURRENCY);
+                .amount(BigDecimal.TEN);
 
         // Act & Assert
         mockMvc.perform(post("/v1/account/transfer-funds")

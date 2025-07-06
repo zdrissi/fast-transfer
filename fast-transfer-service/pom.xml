@@ -22,6 +22,21 @@
         <resilience4j.version>2.0.2</resilience4j.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+
+        <sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
+        <jacoco-version>0.8.12</jacoco-version>
+        <maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
+        <maven-failsafe-plugin-version>3.5.2</maven-failsafe-plugin-version>
+
+        <sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Changed to localhost if running locally -->
+        <sonar.login>sqp_a29751e8c2cd8911fe6651f55c0eeb2c81755515</sonar.login> <!-- Authentication Token -->
+        <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+        <sonar.projectName>${project.artifactId}</sonar.projectName>
+        <sonar.projectVersion>${project.version}</sonar.projectVersion>
+        <sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
 
     <dependencyManagement>
@@ -197,6 +212,67 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
+            </plugin>
+
+            <!-- JaCoCo Maven Plugin -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-test-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin-version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Failsafe Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

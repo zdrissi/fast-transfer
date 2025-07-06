@@ -1,6 +1,6 @@
 package com.fastbank.fasttransfer.service;
 
-import com.fastbank.fasttransfer.base.AbstractBaseTest;
+import com.fastbank.fasttransfer.base.AbstractComponentTest;
 import com.fastbank.fasttransfer.repository.CurrencyRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CurrencyServiceTest extends AbstractBaseTest {
+class CurrencyServiceTest extends AbstractComponentTest {
 
     @Mock
     private CurrencyRepository currencyRepository;

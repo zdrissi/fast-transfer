@@ -12,13 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public abstract class AbstractRestControllerTest {
-
-    protected static final String OWNER_ID = "Q266201";
-
-    protected static final String OWNER_NAME = "J. Doe";
-
-    protected static final String CURRENCY = "EUR";
+public abstract class AbstractRestControllerTest implements AbstractBaseTest {
 
     @Autowired
     protected MockMvc mockMvc;

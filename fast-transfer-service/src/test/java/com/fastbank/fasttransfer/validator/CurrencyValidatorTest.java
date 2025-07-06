@@ -1,6 +1,6 @@
 package com.fastbank.fasttransfer.validator;
 
-import com.fastbank.fasttransfer.base.AbstractBaseTest;
+import com.fastbank.fasttransfer.base.AbstractComponentTest;
 import com.fastbank.fasttransfer.service.CurrencyService;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CurrencyValidatorTest extends AbstractBaseTest {
+class CurrencyValidatorTest extends AbstractComponentTest {
 
     @Mock
     private CurrencyService currencyService;

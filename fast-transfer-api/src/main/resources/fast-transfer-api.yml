@@ -50,7 +50,7 @@ paths:
   /v1/account/transfer-funds:
     post:
       tags: [ Transfer ]
-      summary: Perform a fund transfer between two accounts
+      summary: Perform a fund transfer between two accounts, the currency of the transfer is the debit account
       operationId: transferFunds
       requestBody:
         required: true
@@ -119,7 +119,6 @@ components:
       required:
         - debitAccountNumber
         - creditAccountNumber
-        - currency
         - amount
       properties:
         debitAccountNumber:
@@ -128,9 +127,6 @@ components:
         creditAccountNumber:
           type: string
           x-field-extra-annotation: '@BankAccount'
-        currency:
-          type: string
-          x-field-extra-annotation: '@Currency'
         amount:
           type: number
           format: int64

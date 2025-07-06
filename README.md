@@ -65,7 +65,11 @@ An account must include the following attributes:
 | GET    | `/v1/account/{accountNumber}` | Get a bank account infos                      | No           | Yes            |
 | POST   |  `/v1/account/transfer-funds` | Perform a fund transfer between two accounts  | Yes          | No             |
 
-*More endpoints to be defined in future iterations.*
+### Open Api (Swagger)
+
+```
+http://localhost:3112/swagger-ui/index.html
+```
 
 ---
 
@@ -100,11 +104,60 @@ An account must include the following attributes:
     * Integration Testing
     * JaCoCo (Test Coverage Reports)
 
-* **DevOps & Monitoring**:
+* **DevOps**:
 
     * Docker
     * Docker Compose
-    * Prometheus
-    * Grafana
     * SonarQube
 
+### Prerequisites
+
+#### Define Variables in .env file
+
+Create a `.env` file in the project's root directory:
+
+```
+CURRENCY_EXCHANGE_API_KEY={API_KEY}
+POSTGRES_USER={POSTGRES_USER}
+POSTGRES_PASSWORD={POSTGRES_PASSWORD}
+```
+
+### Building and running project
+
+Start postgres service using docker-compose.
+
+### IDE Run
+
+Run the `FastTransferApplication`'s `main()` class.
+
+### Maven Run
+To build and run the application with `Maven`, please follow the directions shown below;
+
+```sh
+$ mvn clean install
+$ cd fast-transfer-service
+$ mvn spring-boot:run
+```
+
+---
+
+### Docker Run
+The application can be built and run by the `Docker` engine.
+
+```sh
+$ mvn clean install
+$ docker-compose up --build
+```
+
+### Sonarqube
+
+- Start sonarqube service using `docker-compose up sonarqube` and go to `localhost:9000`
+- Enter username and password as `admin`
+- Change password
+- Click `Create Local Project`
+- Choose the baseline for this code for the project as `Use the global setting`
+- Click `Locally` in Analyze Method
+- Define Token
+- Click `Continue`
+- Copy `sonar.host.url` and `sonar.token` (`sonar.login`) in the `properties` part in  `pom.xml`
+- Run `mvn sonar:sonar` on **fast-transfer-service** to show code analysis

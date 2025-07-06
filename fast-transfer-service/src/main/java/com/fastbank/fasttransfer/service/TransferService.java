@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * Service to handle transfers
@@ -34,15 +33,14 @@ public class TransferService {
     public TransferFundsResponse transferFunds(TransferFundsRequest transferFundsRequest) {
 
         BigDecimal transferAmount = transferFundsRequest.getAmount();
-        String transferCurrency = transferFundsRequest.getCurrency();
 
         BankAccountEntity debitAccount = bankAccountRepository.findByIban(transferFundsRequest.getDebitAccountNumber()).orElseThrow();
         BankAccountEntity creditAccount = bankAccountRepository.findByIban(transferFundsRequest.getCreditAccountNumber()).orElseThrow();
 
         if (debitAccount.getBalance().compareTo(transferAmount) >= 0) {
             String transactionUniqueId = UUID.randomUUID().toString();
-            doBankingOperation(debitAccount, transferAmount, transferCurrency, debitAccount::debit);
-            doBankingOperation(creditAccount, transferAmount, transferCurrency, creditAccount::credit);
+            debitAccount.debit(transferAmount);
+            doCreditOperation(creditAccount, transferAmount, debitAccount.getCurrency());
 
             TransactionEntity transaction = new TransactionEntity();
 
@@ -50,25 +48,25 @@ public class TransferService {
             transaction.setCreditAccount(creditAccount);
             transaction.setDebitAccount(debitAccount);
             transaction.setAmount(transferAmount);
-            transaction.setCurrency(transferCurrency);
 
             transactionRepository.save(transaction);
 
-            return new TransferFundsResponse().transactionId(transactionUniqueId);
+            return new TransferFundsResponse()
+                    .transactionId(transactionUniqueId);
         }
 
         throw new InsufficientFundsException("Debit account does not have sufficient funds");
     }
 
-    private void doBankingOperation(BankAccountEntity account, BigDecimal amount, String currency, Consumer<BigDecimal> consumer) {
+    private void doCreditOperation(BankAccountEntity creditAccount, BigDecimal amount, String currency) {
         BigDecimal convertedAmount = amount;
-        String targetCurrency = account.getCurrency();
+        String targetCurrency = creditAccount.getCurrency();
 
         if (!StringUtils.equals(targetCurrency, currency)) {
             BigDecimal exchangeRate = currencyExchangeClientCaller.getExchangeRate(currency, targetCurrency);
             convertedAmount = convertedAmount.multiply(exchangeRate);
         }
 
-        consumer.accept(convertedAmount);
+        creditAccount.credit(convertedAmount);
     }
 }

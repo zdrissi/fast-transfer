@@ -19,7 +19,7 @@ services:
     image: 'fast-transfer:latest'
     build:
       context: .
-      dockerfile: fast-transfer-service/Dockerfile
+      dockerfile: Dockerfile
     container_name: fast-transfer
     restart: on-failure
     env_file:
@@ -28,6 +28,7 @@ services:
       - "8080:8080"
     environment:
       - server.port=8080
+      - CURRENCY_EXCHANGE_API_KEY=${CURRENCY_EXCHANGE_API_KEY}
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER}
@@ -35,13 +36,14 @@ services:
       - JAVA_OPTS=-Dname=fast-transfer
     depends_on:
       - postgres
-      - sonarqube
     networks:
       - fast-transfer_network
 
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
+    profiles:
+      - optional
     restart: always
     ports:
       - "9000:9000"
@@ -51,45 +53,6 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
     depends_on:
       - postgres
-    networks:
-      - fast-transfer_network
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    restart: unless-stopped
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./data/prometheus/config:/etc/prometheus/
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    networks:
-      - fast-transfer_network
-
-  grafana:
-    image: "grafana/grafana-oss:latest"
-    pull_policy: always
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./data/grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_SERVER_DOMAIN=localhost
-    networks:
-      - fast-transfer_network
-
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    restart: unless-stopped
-    ports:
-      - "3100:3100"
-    volumes:
-      - ./data/loki/config/loki-config.yml.yaml:/etc/loki/loki-config.yml.yaml
     networks:
       - fast-transfer_network
 

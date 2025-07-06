@@ -3,7 +3,7 @@ package com.fastbank.fasttransfer.service;
 import com.fastbank.fasttransfer.api.domain.BankAccountInfosResponse;
 import com.fastbank.fasttransfer.api.domain.CreateBankAccountRequest;
 import com.fastbank.fasttransfer.api.domain.CreateBankAccountResponse;
-import com.fastbank.fasttransfer.base.AbstractBaseTest;
+import com.fastbank.fasttransfer.base.AbstractComponentTest;
 import com.fastbank.fasttransfer.entity.BankAccountEntity;
 import com.fastbank.fasttransfer.exception.BankAccountNotFoundException;
 import com.fastbank.fasttransfer.mapper.BankAccountMapper;
@@ -16,17 +16,11 @@ import org.mockito.Spy;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class BankAccountServiceTest extends AbstractBaseTest {
-
-    public static final String ACCOUNT_NUMBER = UUID.randomUUID().toString();
-    public static final String OWNER_ID = "Q266201";
-    public static final String OWNER_NAME = "J. Doe";
-    public static final String CURRENCY = "EUR";
+class BankAccountServiceTest extends AbstractComponentTest {
 
     @Mock
     private BankAccountRepository bankAccountRepository;

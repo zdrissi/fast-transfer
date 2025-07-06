@@ -20,10 +20,6 @@ public class TransactionEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @Column(name = "currency")
-    private String currency;
-
     @Column(name = "amount")
     private BigDecimal amount;
 

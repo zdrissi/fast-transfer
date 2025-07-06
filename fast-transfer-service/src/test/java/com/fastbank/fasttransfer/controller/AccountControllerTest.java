@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AccountController.class)
-public class AccountControllerTest extends AbstractRestControllerTest {
+class AccountControllerTest extends AbstractRestControllerTest {
 
     @Test
     void givenValidCreateBankAccountRequest_whenCreateBankAccount_thenOk() throws Exception {

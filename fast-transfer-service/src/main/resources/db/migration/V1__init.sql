@@ -27,8 +27,7 @@ CREATE TABLE currency
 CREATE TABLE transaction
 (
     id                    BIGINT       NOT NULL,
-    currency              VARCHAR(255) NOT NULL,
-    amount                DECIMAL,
+    amount                DECIMAL      NOT NULL,
     transaction_unique_id VARCHAR(255),
     debit_account_id      BIGINT,
     credit_account_id     BIGINT,
