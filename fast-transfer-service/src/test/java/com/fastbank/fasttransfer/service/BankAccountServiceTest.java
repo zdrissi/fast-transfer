@@ -73,7 +73,7 @@ class BankAccountServiceTest extends AbstractComponentTest {
         bankAccount.setCurrency(CURRENCY);
         bankAccount.setBalance(BigDecimal.TEN);
 
-        when(bankAccountRepository.findByIban(ACCOUNT_NUMBER))
+        when(bankAccountRepository.findByAccountNumber(ACCOUNT_NUMBER))
                 .thenReturn(Optional.of(bankAccount));
 
         // Act
@@ -89,7 +89,7 @@ class BankAccountServiceTest extends AbstractComponentTest {
     @Test
     void givenInValidAccountNumber_whenFindBankAccount_thenOk() {
         // Arrange
-        when(bankAccountRepository.findByIban(ACCOUNT_NUMBER))
+        when(bankAccountRepository.findByAccountNumber(ACCOUNT_NUMBER))
                 .thenReturn(Optional.empty());
 
         // Act & Assert

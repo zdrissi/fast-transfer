@@ -18,7 +18,8 @@ public abstract class AbstractTestContainerConfiguration {
     private static final PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>(DockerImageName.parse(POSTGRES_IMAGE))
             .withDatabaseName("fast-transfer")
             .withUsername("postgres")
-            .withPassword("111111");
+            .withPassword("111111")
+            .withReuse(true);
 
     @BeforeAll
     static void startContainer() {

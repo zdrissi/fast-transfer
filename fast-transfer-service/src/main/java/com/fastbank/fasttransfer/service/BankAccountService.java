@@ -36,7 +36,7 @@ public class BankAccountService {
     @Transactional(readOnly = true)
     public BankAccountInfosResponse findBankAccount(String accountNumber) {
         return bankAccountRepository
-                .findByIban(accountNumber)
+                .findByAccountNumber(accountNumber)
                 .map(bankAccountMapper::toBankAccount)
                 .orElseThrow(() -> new BankAccountNotFoundException(accountNumber));
     }

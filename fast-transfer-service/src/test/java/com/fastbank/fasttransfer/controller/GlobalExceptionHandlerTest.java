@@ -4,8 +4,10 @@ import com.fastbank.fasttransfer.base.AbstractComponentTest;
 import com.fastbank.fasttransfer.exception.BankAccountNotFoundException;
 import com.fastbank.fasttransfer.exception.InsufficientFundsException;
 import com.fastbank.fasttransfer.model.CustomError;
+import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GlobalExceptionHandlerTest extends AbstractComponentTest {
+
+    @Mock
+    private FeignException feignException;
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -63,6 +68,25 @@ class GlobalExceptionHandlerTest extends AbstractComponentTest {
 
         // Assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        CustomError actualError = (CustomError) responseEntity.getBody();
+        checkCustomError(expectedError, actualError);
+    }
+
+    @Test
+    void givenFeignException_whenHandleFeignException_thenRespondServiceUnavailable() {
+
+        // Act
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.SERVICE_UNAVAILABLE)
+                .message("Service Unavailable, please try again later.")
+                .isSuccess(false)
+                .build();
+
+        // Arrange
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleFeignException(feignException);
+
+        // Assert
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
         CustomError actualError = (CustomError) responseEntity.getBody();
         checkCustomError(expectedError, actualError);
     }

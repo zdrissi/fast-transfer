@@ -39,9 +39,9 @@ class TransferServiceTest extends AbstractComponentTest {
 
         // Arrange
         when(bankAccountRepository.findByIban(CREDIT_ACCOUNT_NUMBER))
-                .thenReturn(Optional.of(createBankAccount(CURRENCY)));
+                .thenReturn(createBankAccount(CURRENCY));
         when(bankAccountRepository.findByIban(DEBIT_ACCOUNT_NUMBER))
-                .thenReturn(Optional.of(createBankAccount(CURRENCY)));
+                .thenReturn(createBankAccount(CURRENCY));
 
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
                 .creditAccountNumber(CREDIT_ACCOUNT_NUMBER)
@@ -60,11 +60,11 @@ class TransferServiceTest extends AbstractComponentTest {
         // Arrange
         BankAccountEntity debitAccount = createBankAccount(debitCurrency);
         when(bankAccountRepository.findByIban(DEBIT_ACCOUNT_NUMBER))
-                .thenReturn(Optional.of(debitAccount));
+                .thenReturn(debitAccount);
 
         BankAccountEntity creditAccount = createBankAccount(creditCurrency);
         when(bankAccountRepository.findByIban(CREDIT_ACCOUNT_NUMBER))
-                .thenReturn(Optional.of(creditAccount));
+                .thenReturn(creditAccount);
 
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
                 .creditAccountNumber(CREDIT_ACCOUNT_NUMBER)

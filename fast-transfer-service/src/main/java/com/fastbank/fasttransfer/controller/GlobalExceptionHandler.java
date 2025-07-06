@@ -3,6 +3,7 @@ package com.fastbank.fasttransfer.controller;
 import com.fastbank.fasttransfer.exception.BankAccountNotFoundException;
 import com.fastbank.fasttransfer.exception.InsufficientFundsException;
 import com.fastbank.fasttransfer.model.CustomError;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -32,6 +33,15 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    protected ResponseEntity<Object> handleFeignException(final FeignException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.SERVICE_UNAVAILABLE)
+                .message("Service Unavailable, please try again later.")
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

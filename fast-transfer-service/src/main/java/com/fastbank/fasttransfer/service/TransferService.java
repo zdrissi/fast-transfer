@@ -34,8 +34,8 @@ public class TransferService {
 
         BigDecimal transferAmount = transferFundsRequest.getAmount();
 
-        BankAccountEntity debitAccount = bankAccountRepository.findByIban(transferFundsRequest.getDebitAccountNumber()).orElseThrow();
-        BankAccountEntity creditAccount = bankAccountRepository.findByIban(transferFundsRequest.getCreditAccountNumber()).orElseThrow();
+        BankAccountEntity debitAccount = bankAccountRepository.findByIban(transferFundsRequest.getDebitAccountNumber());
+        BankAccountEntity creditAccount = bankAccountRepository.findByIban(transferFundsRequest.getCreditAccountNumber());
 
         if (debitAccount.getBalance().compareTo(transferAmount) >= 0) {
             String transactionUniqueId = UUID.randomUUID().toString();

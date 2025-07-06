@@ -39,9 +39,9 @@
 
 ## 🏗️ Architecture Characteristics
 
-* **Auditability**: TBD (To be defined).
+
 * **Concurrency**: The system must handle concurrent requests from multiple users/systems.
-* **Data Integrity**: TBD (To be defined).
+* **Data Consistency**: Data must remain consistent.
 
 ---
 
@@ -68,7 +68,7 @@ An account must include the following attributes:
 ### Open Api (Swagger)
 
 ```
-http://localhost:3112/swagger-ui/index.html
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
@@ -77,7 +77,7 @@ http://localhost:3112/swagger-ui/index.html
 
 * **Language & Frameworks**:
 
-    * Java 21
+    * Java 17
     * Spring Boot 3.+
     * RESTful APIs
 
@@ -124,7 +124,7 @@ POSTGRES_PASSWORD={POSTGRES_PASSWORD}
 
 ### Building and running project
 
-Start postgres service using docker-compose.
+Start postgres service using `docker-compose up postgres`.
 
 ### IDE Run
 
@@ -142,7 +142,7 @@ $ mvn spring-boot:run
 ---
 
 ### Docker Run
-The application can be built and run by the `Docker` engine.
+The application can be built and run by Docker.
 
 ```sh
 $ mvn clean install
@@ -150,6 +150,8 @@ $ docker-compose up --build
 ```
 
 ### Sonarqube
+
+To scan the project using SonarQube :
 
 - Start sonarqube service using `docker-compose up sonarqube` and go to `localhost:9000`
 - Enter username and password as `admin`
