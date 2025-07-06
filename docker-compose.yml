@@ -1,0 +1,67 @@
+services:
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres-container
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fast-transfer_network
+
+  fast-transfer:
+    image: 'fast-transfer:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fast-transfer
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    environment:
+      - server.port=8080
+      - CURRENCY_EXCHANGE_API_KEY=${CURRENCY_EXCHANGE_API_KEY}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JAVA_OPTS=-Dname=fast-transfer
+    depends_on:
+      - postgres
+    networks:
+      - fast-transfer_network
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    profiles:
+      - optional
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    depends_on:
+      - postgres
+    networks:
+      - fast-transfer_network
+
+volumes:
+  postgres_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+
+networks:
+  fast-transfer_network:
+    driver: bridge

@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: Fast transfer API
+  description: |
+    # Fast transfer - API
+    Faster transfer API for managing accounts and handling money transfers.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/account:
+    post:
+      tags: [ Account ]
+      summary: Create a new bank account
+      operationId: createBankAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBankAccountRequest'
+      responses:
+        '200':
+          description: Identifier of the newly created account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBankAccountResponse'
+
+  /v1/account/{accountNumber}:
+    get:
+      tags: [ Account ]
+      summary: Get a bank account infos
+      operationId: findBankAccount
+      parameters:
+        - name: accountNumber
+          description: The account number (iban)
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bank account infos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccountInfosResponse'
+
+  /v1/account/transfer-funds:
+    post:
+      tags: [ Transfer ]
+      summary: Perform a fund transfer between two accounts, the currency of the transfer is the debit account
+      operationId: transferFunds
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferFundsRequest'
+      responses:
+        '200':
+          description: Transaction id of the transfer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferFundsResponse'
+
+components:
+  schemas:
+    CreateBankAccountRequest:
+      type: object
+      required:
+        - ownerId
+        - ownerName
+        - currency
+        - initialBalance
+      properties:
+        ownerId:
+          type: string
+        ownerName:
+          type: string
+        currency:
+          type: string
+          x-field-extra-annotation: '@Currency'
+        initialBalance:
+          type: number
+          format: int64
+          minimum: 0
+          exclusiveMinimum: true
+
+    CreateBankAccountResponse:
+      type: object
+      properties:
+        accountNumber:
+          description: Account number of the newly created account
+          type: string
+
+    BankAccountInfosResponse:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        accountNumber:
+          type: string
+        ownerId:
+          type: string
+        ownerName:
+          type: string
+        currency:
+          type: string
+        balance:
+          type: number
+          format: int64
+
+    TransferFundsRequest:
+      type: object
+      required:
+        - debitAccountNumber
+        - creditAccountNumber
+        - amount
+      properties:
+        debitAccountNumber:
+          type: string
+          x-field-extra-annotation: '@BankAccount'
+        creditAccountNumber:
+          type: string
+          x-field-extra-annotation: '@BankAccount'
+        amount:
+          type: number
+          format: int64
+          minimum: 0
+          exclusiveMinimum: true
+
+    TransferFundsResponse:
+      type: object
+      properties:
+        transactionId:
+          description: Unique transaction id of the transfer
+          type: string
