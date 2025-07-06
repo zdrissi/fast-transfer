@@ -28,7 +28,7 @@
         <maven-surefire-plugin-version>3.5.2</maven-surefire-plugin-version>
         <maven-failsafe-plugin-version>3.5.2</maven-failsafe-plugin-version>
 
-        <sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Changed to localhost if running locally -->
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.login>sqp_a29751e8c2cd8911fe6651f55c0eeb2c81755515</sonar.login> <!-- Authentication Token -->
         <sonar.projectKey>${project.artifactId}</sonar.projectKey>
         <sonar.projectName>${project.artifactId}</sonar.projectName>
@@ -153,12 +153,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-        </dependency>
-
-        <!-- HttpClient5 -->
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
         </dependency>
 
         <!-- Util dependencies -->

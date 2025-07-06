@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handler for exceptions, translates exceptions into http status
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
