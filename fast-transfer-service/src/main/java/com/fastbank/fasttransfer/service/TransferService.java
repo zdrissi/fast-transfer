@@ -55,7 +55,7 @@ public class TransferService {
                     .transactionId(transactionUniqueId);
         }
 
-        throw new InsufficientFundsException("Debit account does not have sufficient funds");
+        throw new InsufficientFundsException();
     }
 
     private void doCreditOperation(BankAccountEntity creditAccount, BigDecimal amount, String currency) {

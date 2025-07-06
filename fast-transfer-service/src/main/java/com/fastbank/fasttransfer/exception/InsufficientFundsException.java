@@ -5,7 +5,7 @@ package com.fastbank.fasttransfer.exception;
  */
 public class InsufficientFundsException extends RuntimeException {
 
-    public InsufficientFundsException(String message) {
-        super(message);
+    public InsufficientFundsException() {
+        super("Debit account does not have sufficient funds");
     }
 }

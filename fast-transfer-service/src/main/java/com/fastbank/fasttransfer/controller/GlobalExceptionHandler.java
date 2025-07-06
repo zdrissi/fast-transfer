@@ -1,5 +1,7 @@
-package com.fastbank.fasttransfer.exception;
+package com.fastbank.fasttransfer.controller;
 
+import com.fastbank.fasttransfer.exception.BankAccountNotFoundException;
+import com.fastbank.fasttransfer.exception.InsufficientFundsException;
 import com.fastbank.fasttransfer.model.CustomError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex) {
-
         List<CustomError.CustomSubError> subErrors = new ArrayList<>();
 
         ex.getBindingResult().getAllErrors().forEach(
