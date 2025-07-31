@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,5 +21,5 @@ public interface BankAccountRepository extends JpaRepository<BankAccountEntity, 
     Optional<BankAccountEntity> findByAccountNumber(@Param("iban") final String iban);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    BankAccountEntity findByIban(final String iban);
+    List<BankAccountEntity> findByIbanIn(final List<String> iban);
 }

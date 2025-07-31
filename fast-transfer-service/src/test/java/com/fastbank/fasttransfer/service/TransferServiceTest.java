@@ -15,7 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -38,10 +38,8 @@ class TransferServiceTest extends AbstractComponentTest {
     void givenInsufficientFunds_whenTransferFunds_thenOk() {
 
         // Arrange
-        when(bankAccountRepository.findByIban(CREDIT_ACCOUNT_NUMBER))
-                .thenReturn(createBankAccount(CURRENCY));
-        when(bankAccountRepository.findByIban(DEBIT_ACCOUNT_NUMBER))
-                .thenReturn(createBankAccount(CURRENCY));
+        when(bankAccountRepository.findByIbanIn(List.of(DEBIT_ACCOUNT_NUMBER, CREDIT_ACCOUNT_NUMBER)))
+                .thenReturn(List.of(createBankAccount(CURRENCY, DEBIT_ACCOUNT_NUMBER), createBankAccount(CURRENCY, CREDIT_ACCOUNT_NUMBER)));
 
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
                 .creditAccountNumber(CREDIT_ACCOUNT_NUMBER)
@@ -58,13 +56,10 @@ class TransferServiceTest extends AbstractComponentTest {
     void givenEnoughFunds_whenTransferFunds_thenOk(String debitCurrency, String creditCurrency, BigDecimal creditAccountBalance) {
 
         // Arrange
-        BankAccountEntity debitAccount = createBankAccount(debitCurrency);
-        when(bankAccountRepository.findByIban(DEBIT_ACCOUNT_NUMBER))
-                .thenReturn(debitAccount);
-
-        BankAccountEntity creditAccount = createBankAccount(creditCurrency);
-        when(bankAccountRepository.findByIban(CREDIT_ACCOUNT_NUMBER))
-                .thenReturn(creditAccount);
+        BankAccountEntity debitAccount = createBankAccount(debitCurrency, DEBIT_ACCOUNT_NUMBER);
+        BankAccountEntity creditAccount = createBankAccount(creditCurrency, CREDIT_ACCOUNT_NUMBER);
+        when(bankAccountRepository.findByIbanIn(List.of(DEBIT_ACCOUNT_NUMBER, CREDIT_ACCOUNT_NUMBER)))
+                .thenReturn(List.of(debitAccount, creditAccount));
 
         TransferFundsRequest transferFundsRequest = new TransferFundsRequest()
                 .creditAccountNumber(CREDIT_ACCOUNT_NUMBER)
@@ -92,8 +87,9 @@ class TransferServiceTest extends AbstractComponentTest {
      * @param currency account currency
      * @return bank account entity
      */
-    private BankAccountEntity createBankAccount(String currency) {
+    private BankAccountEntity createBankAccount(String currency, String iban) {
         BankAccountEntity bankAccount = new BankAccountEntity();
+        bankAccount.setIban(iban);
         bankAccount.setBalance(BigDecimal.TEN);
         bankAccount.setCurrency(currency);
         return bankAccount;

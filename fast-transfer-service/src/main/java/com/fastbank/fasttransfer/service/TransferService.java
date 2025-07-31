@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,9 +34,10 @@ public class TransferService {
     public TransferFundsResponse transferFunds(TransferFundsRequest transferFundsRequest) {
 
         BigDecimal transferAmount = transferFundsRequest.getAmount();
+        List<BankAccountEntity> accounts = bankAccountRepository.findByIbanIn(List.of(transferFundsRequest.getDebitAccountNumber(), transferFundsRequest.getCreditAccountNumber()));
 
-        BankAccountEntity debitAccount = bankAccountRepository.findByIban(transferFundsRequest.getDebitAccountNumber());
-        BankAccountEntity creditAccount = bankAccountRepository.findByIban(transferFundsRequest.getCreditAccountNumber());
+        BankAccountEntity debitAccount = accounts.stream().filter(account -> account.getIban().equals(transferFundsRequest.getDebitAccountNumber())).findFirst().orElseThrow();
+        BankAccountEntity creditAccount = accounts.stream().filter(account -> account.getIban().equals(transferFundsRequest.getCreditAccountNumber())).findFirst().orElseThrow();
 
         if (debitAccount.getBalance().compareTo(transferAmount) >= 0) {
             String transactionUniqueId = UUID.randomUUID().toString();
